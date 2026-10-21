@@ -6,7 +6,7 @@ LOGS := input/logs
 PY   := uv run python -u
 
 # archive.org collection; change here or override: make upload_archive IA_COLLECTION=iascivil
-IA_COLLECTION ?= opensource
+IA_COLLECTION ?= ias-civil-list
 # Wayback SPN2: reuse an existing capture newer than this instead of re-capturing
 WAYBACK_REUSE ?= 30d
 
