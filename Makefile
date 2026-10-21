@@ -10,17 +10,12 @@ IA_COLLECTION ?= ias-civil-list
 # Wayback SPN2: reuse an existing capture newer than this instead of re-capturing
 WAYBACK_REUSE ?= 30d
 
-# Existing downloads used by `make seed`
-SEED_PDFS ?= iasCivilList/pdfs
-SEED_CSV  ?= iasCivilList/pdf_urls.csv
-
-.PHONY: help install seed import download link_wayback upload_archive update_archive_metadata sync_hf_push
+.PHONY: help install import download link_wayback upload_archive update_archive_metadata sync_hf_push
 
 help:
 	@echo "Usage: make <target>"
 	@echo ""
 	@echo "  install                  set up the uv environment"
-	@echo "  seed                     one-time: copy $(SEED_PDFS) into LFS and build downloads.json"
 	@echo "  import                   download PDFs from the HF dataset into LFS/doptIASCivil"
 	@echo "  download                 download missing PDFs (incl. current year) from iascivillist.dopt.gov.in"
 	@echo "  link_wayback             capture PDF URLs in the Wayback Machine (SPN2)  [WAYBACK_REUSE=$(WAYBACK_REUSE)]"
@@ -33,9 +28,6 @@ help:
 install: pyproject.toml
 	uv venv
 	uv sync
-
-seed:
-	set -o pipefail; $(PY) $(SRC)/seed.py $(SEED_PDFS) $(SEED_CSV) | tee $(LOGS)/seed.log
 
 import:
 	set -o pipefail; $(PY) $(SRC)/sync_hf.py pull | tee $(LOGS)/import.log
